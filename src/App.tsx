@@ -1,29 +1,49 @@
 import {createSignal} from 'solid-js'
-import solidLogo from './assets/solid.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
-	const [count, setCount] = createSignal(0)
+import {generateBoard} from './generator'
+import {sudokoSolver} from './solver'
+
+/**
+figure out how to store sodoku state
+	eliminate clues & check uniqueness
+	difficulty options
+UI
+	URL 2 board
+	mobile keypad buttons
+	notes
+	options
+		tell me if I'm wrong
+
+ */
+
+const App = () => {
+	const [board, setBoard] = createSignal(generateBoard())
+
+	const start = Date.now()
+
+	if (sudokoSolver(board())) console.log(`Solved in ${Date.now() - start}`)
+	else throw `Invalid Board: ${JSON.stringify(board())}`
+
+	console.log(board())
 
 	return (
 		<>
-			<div>
-				<a href="https://vitejs.dev" target="_blank">
-					<img src={viteLogo} class="logo" alt="Vite logo" />
-				</a>
-				<a href="https://solidjs.com" target="_blank">
-					<img src={solidLogo} class="logo solid" alt="Solid logo" />
-				</a>
-			</div>
-			<h1>Vite + Solid</h1>
-			<div class="card">
-				<button onClick={() => setCount(count => count + 1)}>count is {count()}</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p class="read-the-docs">Click on the Vite and Solid logos to learn more</p>
+			<table>
+				{Array(board().length)
+					.fill(1)
+					.map((_, y) => (
+						<tr>
+							{Array(board().length)
+								.fill(1)
+								.map((_, x) => (
+									<td>{board()[y][x]}</td>
+								))}
+						</tr>
+					))}
+			</table>
+
+			{/* <button onClick={() => setBoard(count => count + 1)}>count is {board()}</button> */}
 		</>
 	)
 }
