@@ -8,6 +8,12 @@ main {
 }
 
 .board {
+	/** @note 14px =
+	 * +8px (= 4 thick lines (2px) per row/col)
+	 * +6px (= 6 thin lines (1px) per row/col)
+	*/
+	--cell-dimensions: calc(calc(100% - 14px) / 9);
+
 	border: 2px solid #fff;
 	border-collapse: collapse;
 	height: 100vmin;
@@ -28,4 +34,23 @@ main {
 
 .board td {
 	border: 1px solid #fff;
+	font-size: 2rem;
+	font-weight: bold; /** @note for pre-filled cells, will be over written by input styles */
+	min-height: var(--cell-dimensions);
+	min-width: var(--cell-dimensions);
+}
+
+.board input {
+	appearance: none;
+	background: transparent;
+	border: none;
+	font-size: 1.25rem;
+	font-weight: normal;
+	height: 100%;
+	text-align: center;
+	width: 100%;
+}
+
+.board [data-visible='false'] {
+	color: transparent;
 }
