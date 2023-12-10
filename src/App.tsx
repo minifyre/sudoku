@@ -29,7 +29,7 @@ const App = () => {
 
 	return (
 		<>
-			<table>
+			<table class="board">
 				{Array(board().length)
 					.fill(1)
 					.map((_, y) => (
