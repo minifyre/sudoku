@@ -14,13 +14,12 @@ UI
 	notes (transparent text input that changes the background--SVG sprites?)
 	options
 		tell me if I'm wrong (color red/shade the background a bit for colorblind people?)
-
-	find a stackoverflow-compatible license
-
 UX
+	highlight hovered cols/rows/boxes & other cells with the same value as the one currently being hovered over (mobile/desktop)
 	ensure that the board has a unique solution so that [data-inccorect] does not cause issues if the user comes up with an alternative solution...
-
- */
+distribution
+	licensing
+*/
 
 const clone = <T,>(json: T): T => JSON.parse(JSON.stringify(json))
 
@@ -33,13 +32,17 @@ const App = () => {
 	const start = Date.now()
 	const test = clone(currentBoard())
 	sudokoSolver(test)
-	const [solvedBoard, setSolvedBoard] = createSignal(test)
+	/** @todo does this even have to be a signal? (i.e., could it just be an unchanging variable referenced later?) */
+	const [solvedBoard] = createSignal(test)
+
+	const [mistakes, setMistakes] = createSignal(0)
 
 	if (sudokoSolver(clone(currentBoard()))) console.log(`Solved in ${Date.now() - start}`)
 	else throw `Invalid Board: ${JSON.stringify(currentBoard())}`
 
 	return (
 		<>
+			<header>Mistakes: {mistakes()}</header>
 			<section class="board">
 				{Array(currentBoard().length)
 					.fill(1)
@@ -64,6 +67,9 @@ const App = () => {
 										const tmpBoard = clone(currentBoard())
 										tmpBoard[y][x] = newValue
 										setCurrentBoard(tmpBoard)
+
+										if (newValue && newValue !== solvedBoard()[y][x])
+											setMistakes(mistakes() + 1)
 									}}
 									min="0"
 									max="9"
