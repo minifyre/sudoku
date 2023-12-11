@@ -8,49 +8,74 @@ main {
 }
 
 .board {
-	/** @note 14px =
-	 * +8px (= 4 thick lines (2px) per row/col)
-	 * +6px (= 6 thin lines (1px) per row/col)
-	*/
-	--cell-dimensions: calc(calc(100% - 14px) / 9);
+	--one-third: calc(100% / 3);
+	--one-nineth: calc(100% / 9);
 
-	border: 2px solid #fff;
-	border-collapse: collapse;
+	background: /** @note right & bottom edges */ linear-gradient(
+			to left,
+			#fff 0px,
+			#fff 2px,
+			transparent 2px
+		),
+		linear-gradient(to top, #fff 0px, #fff 2px, transparent 2px),
+		/** @note box lines */
+			repeating-linear-gradient(
+				to right,
+				#fff 0px,
+				#fff 2px,
+				transparent 2px,
+				transparent var(--one-third)
+			),
+		repeating-linear-gradient(
+			to bottom,
+			#fff 0px,
+			#fff 2px,
+			transparent 2px,
+			transparent var(--one-third)
+		),
+		/** @note cell lines */
+			repeating-linear-gradient(
+				to right,
+				#999 0px,
+				#999 1px,
+				transparent 1px,
+				transparent var(--one-nineth)
+			),
+		repeating-linear-gradient(
+			to bottom,
+			#999 0px,
+			#999 1px,
+			transparent 1px,
+			transparent var(--one-nineth)
+		);
+
+	display: flex;
+	flex-wrap: wrap;
 	height: 100vmin;
 	margin: 0 auto;
 	text-align: center;
 	width: 100vmin;
 }
 
-.board tr:nth-child(3),
-.board tr:nth-child(6) {
-	border-bottom: 2px solid #fff;
-}
-
-.board td:nth-child(3),
-.board td:nth-child(6) {
-	border-right: 2px solid #fff;
-}
-
-.board td {
-	border: 1px solid #fff;
-	font-size: 2rem;
-	font-weight: bold; /** @note for pre-filled cells, will be over written by input styles */
-	min-height: var(--cell-dimensions);
-	min-width: var(--cell-dimensions);
-}
-
-.board input {
+.board .cell {
 	appearance: none;
 	background: transparent;
 	border: none;
 	font-size: 1.25rem;
 	font-weight: normal;
-	height: 100%;
+	height: var(--one-nineth);
+	padding: 0;
 	text-align: center;
-	width: 100%;
+	width: var(--one-nineth);
 }
 
-.board [data-visible='false'] {
+/** @note pre-filled cells */
+.board .cell[disabled] {
+	font-size: 2rem;
+	font-weight: bold;
+}
+
+/** @note prevents displaying zeroes) */
+.cell[data-blank='false'] {
 	color: transparent;
 }

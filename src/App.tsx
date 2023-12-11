@@ -15,6 +15,7 @@ UI
 	options
 		tell me if I'm wrong (color red/shade the background a bit for colorblind people?)
 
+	find a stackoverflow-compatible license
  */
 
 const clone = <T,>(json: T): T => JSON.parse(JSON.stringify(json))
@@ -35,41 +36,35 @@ const App = () => {
 
 	return (
 		<>
-			<table class="board">
+			<section class="board">
 				{Array(currentBoard().length)
 					.fill(1)
-					.map((_, y) => (
-						<tr>
-							{Array(currentBoard().length)
-								.fill(1)
-								.map((_, x) => (
-									<td data-visible={!!currentBoard()[y][x]}>
-										{!!initialBoard()[y][x] ? (
-											currentBoard()[y][x]
-										) : (
-											<input
-												onInput={event => {
-													/** @note '' will return NaN, thus the zero guard */
-													const newValue =
-														event.currentTarget.valueAsNumber || 0
+					.map((_, y) =>
+						Array(currentBoard().length)
+							.fill(1)
+							.map((_, x) => (
+								<input
+									class="cell"
+									data-blank={!!currentBoard()[y][x]}
+									data-x={x}
+									data-y={y}
+									disabled={!!initialBoard()[y][x]}
+									onInput={event => {
+										/** @note '' will return NaN, thus the zero guard */
+										const newValue = event.currentTarget.valueAsNumber || 0
 
-													const tmpBoard = clone(currentBoard())
-													tmpBoard[y][x] = newValue
-													setCurrentBoard(tmpBoard)
-												}}
-												min="0"
-												max="9"
-												{...(currentBoard()[y][x]
-													? {value: currentBoard()[y][x]}
-													: {})}
-												type="number"
-											/>
-										)}
-									</td>
-								))}
-						</tr>
-					))}
-			</table>
+										const tmpBoard = clone(currentBoard())
+										tmpBoard[y][x] = newValue
+										setCurrentBoard(tmpBoard)
+									}}
+									min="0"
+									max="9"
+									{...(currentBoard()[y][x] ? {value: currentBoard()[y][x]} : {})}
+									type="number"
+								/>
+							))
+					)}
+			</section>
 		</>
 	)
 }
