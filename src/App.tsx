@@ -16,6 +16,10 @@ UI
 		tell me if I'm wrong (color red/shade the background a bit for colorblind people?)
 
 	find a stackoverflow-compatible license
+
+UX
+	ensure that the board has a unique solution so that [data-inccorect] does not cause issues if the user comes up with an alternative solution...
+
  */
 
 const clone = <T,>(json: T): T => JSON.parse(JSON.stringify(json))
@@ -46,6 +50,10 @@ const App = () => {
 								<input
 									class="cell"
 									data-blank={!!currentBoard()[y][x]}
+									data-incorrect={
+										currentBoard()[y][x] !== 0 &&
+										currentBoard()[y][x] !== solvedBoard()[y][x]
+									}
 									data-x={x}
 									data-y={y}
 									disabled={!!initialBoard()[y][x]}

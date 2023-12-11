@@ -79,3 +79,8 @@ main {
 .cell[data-blank='false'] {
 	color: transparent;
 }
+
+.cell[data-incorrect='true'] {
+	background: #f001;
+	color: #f00;
+}
