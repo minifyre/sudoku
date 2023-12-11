@@ -3,6 +3,7 @@ import './App.css'
 
 import {generateBoard} from './generator'
 import {sudokoSolver} from './solver'
+import {board2twitterUrl, shareText} from './share'
 
 /**
 figure out how to store sodoku state
@@ -42,7 +43,12 @@ const App = () => {
 
 	return (
 		<>
-			<header>Mistakes: {mistakes()}</header>
+			<header>
+				Mistakes: {mistakes()}
+				<a href={board2twitterUrl(initialBoard())} target="_blank">
+					<button>Share</button>
+				</a>
+			</header>
 			<section class="board">
 				{Array(currentBoard().length)
 					.fill(1)
